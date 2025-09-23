@@ -16,7 +16,7 @@ print(nested_list)
 ########访问元素######
 print("访问列表元素")
 fruits = ["apple","banana","orange"]#从左往右下标是:0  1  2
-                                    #从右往左下标是-1 -2 -3
+                                    #            -3 -2 -1
 print(fruits)
 print("This is the index 0：",fruits[0])
 print("This is the index 1：",fruits[1])
@@ -29,7 +29,7 @@ print("This is the index -3：",fruits[-3])
 print("切片(提取子列表)")
 number = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 print(number)
-print(number[1:4])#输出[2 ,3 ,4]从下标为1的地方开始，走四布但是左闭右开
+print(number[1:4])#输出[2 ,3 ,4]从下标为1的地方开始，走四步但是左闭右开
 print(number[:3])#输出[1，2，3]
 print(number[2:])#输出[3 ,4 ,5 ，6  ,7 ,8 ,9 ,10 ,11 ,12 ,13 ,14 ,15]
 print(number[:])#全部输出
@@ -117,9 +117,11 @@ print(f"这是修改后的c列表{c}")
 
 #########################################################
 ########实践：统计一段文本中每个单词的出现次数################
-string_in = input("请输入一串英文文本:")
+string_in = input("请输入一串英文文本（每个字母用空格隔开）:")
 print(string_in)
 words = string_in.split()#将一整段文本分割为列表
+print(words)
+#用了一个字典存放计数结果
 word_count = {}
 for word in words:
     if word in word_count:
