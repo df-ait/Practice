@@ -33,7 +33,7 @@ void TrackQueueV4::push(Eigen::Matrix<double, 4, 1>& input_pose, TimePoint t) {
 
     /*新增*/
     //计算预测误差(如果存在有效的上一次预测状态)
-    if(last_state_!=nullptr && has_valid_predict){
+    if(last_state_!=nullptr && this->has_valid_predict){
         cal_error(pose,t);
     }
     /*********************************************************/
@@ -108,7 +108,7 @@ void TrackQueueV4::push(Eigen::Matrix<double, 4, 1>& input_pose, TimePoint t) {
         list_.push_back(best_state);
 
         /*新增,因为这里目标没有了，所以上一次依据last_state_为依据预测的有效位姿也没有用了*/
-        has_valid_predict = false;
+        this->has_valid_predict = false;
         /**/
     } else {
         funcA_.dt = getDoubleOfS(best_state->last_t, t);
@@ -117,7 +117,7 @@ void TrackQueueV4::push(Eigen::Matrix<double, 4, 1>& input_pose, TimePoint t) {
         best_state->model->update(funcH_, pose);
         /*新增*/
         if(last_state_!=nullptr){
-            has_valid_predict = true;
+            this->has_valid_predict = true;
         }
     }
 }
