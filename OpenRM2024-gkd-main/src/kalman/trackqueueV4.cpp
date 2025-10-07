@@ -312,7 +312,11 @@ void TrackQueueV4::cal_error(Eigen::Matrix<double, 3, 1>& view_pose, TimePoint t
     double cur_error = getDistance(view_pose , last_predict_pose_3);
     last_error = cur_error;
 
-    //打印调试信息
+    //打印调试信息 - 控制台输出
+    std::cout << "trackqueueV4 predict error: " << last_error << std::endl;
+    std::cout << "trackqueueV4 predict delay: " << delay_time << std::endl;
+    
+    //同时保留共享内存中的数据，供上位机软件使用
     rm::message("trackqueueV4 predict error:",last_error);
     rm::message("trackqueueV4 predict delay:",delay_time);
 }

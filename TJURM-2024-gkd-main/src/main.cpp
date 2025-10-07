@@ -22,11 +22,12 @@
 //cam calib
 #include "cam_calibration.hpp"
 
-
+//全局定义的互斥锁和条件变量
 std::mutex hang_up_mutex;
 std::condition_variable hang_up_cv;
 
 int main(int argc, char** argv) {
+    //获取各个核心模块的单例实例，确保全局唯一性
     auto param = Param::get_instance();
     auto pipeline = Pipeline::get_instance();
     auto garage = Garage::get_instance();
@@ -40,14 +41,14 @@ int main(int argc, char** argv) {
     while ((option = getopt(argc, argv, "hsv")) != -1) {
         switch (option) {
             case 's':
-                Data::imshow_flag = true;
+                Data::imshow_flag = true;//启用图像显示标志
                 break;
             case 'h':
                 std::cout << "Usage: " << argv[0] << " [-h] [-s] " << std::endl;
-                break;
+                break;//显示帮助信息
             case 'v':
                 std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!imshow enable" << std::endl;
-                params.is_imshow = 1;
+                params.is_imshow = 1;//启用图像显示功能
         }
     }
     
@@ -74,9 +75,9 @@ int main(int argc, char** argv) {
 
     // while(true) if(init_camera()) break;
 
-    rm::message_init("autoaim");
-    init_debug();
-    init_attack();
+    rm::message_init("autoaim");//初始化消息系统，标识为"autoaim"
+    init_debug();//初始化调试系统
+    init_attack();//初始化攻击识别系统
     //DEBUG 暂时关闭serial
     // if (Data::serial_flag) init_serial();
     //DEBUG 暂时关闭control
@@ -95,6 +96,7 @@ int main(int argc, char** argv) {
     // std::cout << "set SENTRY" << std::endl;  
     // #endif
 
+    //手动模式下的射击控制 按回车键出发一次自动射击
     while(Data::manu_fire) {
         std::cin.get();
         Data::auto_fire = true;
@@ -102,6 +104,7 @@ int main(int argc, char** argv) {
         Data::auto_fire = false;
     }
 
+    //程序挂起等待，直到收到退出信号
     rm::message("Main thread hang up!", rm::MSG_OK);
     std::unique_lock<std::mutex> lock(hang_up_mutex);
     hang_up_cv.wait(lock);
